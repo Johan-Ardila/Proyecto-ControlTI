@@ -1,82 +1,43 @@
-Los archivos *.controller.js y similares funcionan como el intermediario o "cerebro" 
-lógico entre las rutas (peticiones del usuario, osea los archivos *.routes.js) 
-y los modelos (la base de datos , osea los archivos *models.js). 
-Recibe las peticiones HTTP, valida los datos, llama a los modelos para guardar o 
-consultar la información y finalmente responde al cliente (el navegador o frontend) en formato JSON.   
+# Proyecto Control TI 🖥️📊
 
-Los archivos de modelo de datos (*.model_2.js) tienen como función principal es actuar como un puente de lógica de 
-negocio que se comunica al mismo tiempo con dos bases de datos diferentes: MariaDB 
-(para datos relacionales estructurados como información general y stock) y MongoDB 
-(para especificaciones técnicas flexibles o dinámicas).
+Sistema web integral desarrollado para la gestión, control y trazabilidad de inventario de equipos tecnológicos y recursos de hardware. Este proyecto fue diseñado e implementado como parte fundamental del proceso formativo en el programa de Análisis y Desarrollo de Software (ADSO).
 
-Las rutas (*.routes.js) actúan básicamente como el sistema de tráfico o
- la recepción de tu API. Su trabajo principal es conectar la petición que hace el navegador o 
- el frontend con la función correcta en los controladores.
+---
 
-Exactamente para qué sirven?:
+##  Características Principales
 
-    Definen los Endpoints (URLs): Establecen la dirección web exacta a la que el cliente puede acceder 
-    (por ejemplo, /api/equipos, /api/usuarios, etc.).
+* **Gestión de Inventario de Hardware:** Registro detallado, actualización de estados, categorías y consulta rápida de equipos tecnológicos.
+* **Control de Asignaciones:** Seguimiento preciso de la asignación de equipos a usuarios, áreas o departamentos.
+* **Sistema de Autenticación:** Control de acceso seguro mediante un módulo de inicio de sesión gestionado desde el servidor.
+* **Arquitectura Modular:** Organización del código basada en el patrón de diseño lógico (Rutas, Controladores y Modelos).
 
-    Identifican el Método HTTP: Indican qué tipo de acción se va a realizar mediante los verbos HTTP:
+---
 
-        GET: Para consultar o leer datos.
+##  Tecnologías y Stack
 
-        POST: Para registrar o crear datos nuevos.
+El proyecto fue construido utilizando tecnologías modernas del ecosistema de JavaScript y bases de datos relacionales:
 
-        PUT o PATCH: Para actualizar información existente.
+* **Entorno de ejecución:** Node.js
+* **Framework Backend:** Express.js
+* **Base de Datos:** MySQL / MariaDB
+* **Frontend / Vistas:** HTML5, CSS3, JavaScript (con integración de motor de plantillas o vistas modulares)
+* **Control de Versiones:** Git / GitHub
 
-        DELETE: Para borrar registros.
+---
 
-    Aplican el Filtro de Seguridad (Middlewares): Son el lugar ideal donde se colocan los "guardias de seguridad" 
-    que se vieron antes (como esAdmin o cualquierUsuario) en middlewares.js asegurando que solo las personas 
-    con el rol correcto puedan ejecutar cierta acción.
+## Estructura del Proyecto
 
-    Derivan al Controlador: Una vez que la petición pasa las reglas 
-    y la URL coincide, la ruta le entrega el control al método específico del controlador 
-    (por ejemplo, equipoController.create) para que procese la lógica y devuelva la respuesta.
-
-    QUE ES UN DOM?
-
-   En el mundo del desarrollo web (y en los archivos que acabamos del proyecto), DOM significa Document Object Model (Modelo de Objetos del Documento).
-
-    forma sencilla de qué es:
-
-    Qué es?: Es la estructura que crea el navegador web cuando lee el código HTML. Convierte cada etiqueta
-     (un <div>, un botón, una tabla, un texto) en un objeto que JavaScript puede leer, modificar, agregar o 
-     eliminar en tiempo real.
-
-    Por qué aparece en el código? Cuando ves cosas como document.addEventListener('DOMContentLoaded', ...),
-    significa "espera a que el navegador termine de cargar toda la estructura de la página (el DOM) 
-    antes de empezar a ejecutar las funciones de JavaScript". Así te aseguras de que los elementos de 
-    la pantalla ya existen cuando el código intenta interactuar con ellos.
-
-
-    QUE ES UN KPI?
-
-    como se ve en incidencias.js y en otros archivos .js de assets, las tarjetas KPI 
-    (Key Performance Indicator o Indicadores Clave de Rendimiento) son pequeños bloques visuales o 
-    contadores ubicados normalmente en la parte superior del panel. Su función es mostrar métricas
-    y estadísticas resumidas en tiempo real para que los administradores o usuarios puedan ver el 
-    estado general del sistema de un solo vistazo.Específicamente, el código calcula y actualiza tres 
-    tarjetas KPI principales:
-    
-    Total de Incidencias (kpi-total-incidencias): Muestra la cantidad total de reportes o problemas registrados
-    en el sistema.   
-    
-    Incidencias en Proceso (kpi-en-proceso): Cuenta cuántas incidencias están siendo atendidas o trabajándose 
-    actualmente.   
-    
-    Incidencias Pendientes (kpi-pendientes): Muestra el número de reportes que aún no han sido tomados y están 
-    a la espera de revisión.   
-
-
-    PARA QUE ES LA CARPETA DE COMPONENTS?
-    sirve para incluír elementos en cualquier archivo sin tener duplicados en ellos, 
-    se usa principalmente en este proyecto para no tener que modificar cada sidebar 
-    que haya en el dashboard y así optimizar tiempo y código
-
-   SOBRE NODEMAILER: para que nodemailer funcione , se necesita el correo al que le van a llegar los correos
-   del formulario de la seccion de contactanos , además de tener la clave de seguridad del correo que se obtiene 
-   de la verificación en dos pasos
-   IMPORTANTE!!!:Evitar compartir esta clave con terceros a menos que sean confiables
+```text
+Proyecto-ControlTI/
+│
+├── public/            # Archivos estáticos (hojas de estilo CSS, scripts de cliente, imágenes)
+├── src/
+│   ├── config/        # Configuración de la conexión a la base de datos
+│   ├── controllers/   # Lógica de negocio y controladores de rutas
+│   ├── models/        # Consultas y modelos de interacción con la base de datos
+│   ├── routes/        # Definición de rutas y endpoints de la aplicación
+│   └── views/         # Interfaz de usuario (vistas o plantillas)
+│
+├── .env.example       # Plantilla de variables de entorno requeridas
+├── package.json       # Dependencias y scripts de configuración del proyecto
+└── server.js          # Punto de entrada principal de la aplicación

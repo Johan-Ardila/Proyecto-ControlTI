@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mis Solicitudes - Control TI</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css">
+  <link rel="stylesheet" href="../assets/css/Styles.css">
+  <link rel="stylesheet" href="../assets/css/dashboard.css">
+</head>
+<body>
+
+  <div class="dashboard-layout">
+    <!-- Overlay para cerrar el menú en móviles -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <div id="sidebar-container"></div>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar__left">
+          <button class="btn-toggle-sidebar" id="btn-toggle-sidebar" aria-label="Abrir Menú">
+            <i class="ri-menu-line"></i>
+          </button>
+          <h2>Gestión de Solicitudes</h2>
+        </div>
+
+        <div class="user-profile">
+          <i class="ri-user-3-fill"></i>
+          <strong id="nombre-usuario">Cargando...</strong>
+          <small id="rol-usuario" class="badge"></small>
+        </div>
+      </header>
+
+      <!-- KPI CARDS -->
+      <section class="kpi-grid">
+        <div class="kpi-card kpi-card--purpura">
+          <i class="ri-file-list-line"></i>
+          <div>
+            <h3 id="kpi-total-solicitudes">0</h3>
+            <p>Total Solicitudes</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- TABLA DE SOLICITUDES -->
+      <section class="panel-section">
+        <div class="panel-header">
+          <h3>Historial de Solicitudes</h3>
+          
+          <div class="panel-actions">
+            <div class="search-box">
+              <i class="ri-search-line search-icon"></i>
+              <input 
+                type="search" 
+                id="inputBuscar" 
+                placeholder="Buscar por tipo, equipo, descripción..." 
+                autocomplete="off"
+              >
+            </div>
+
+            <button class="btn btn--primary" id="btn-nueva-solicitud">
+              <i class="ri-add-line"></i> Nueva Solicitud
+            </button>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th># ID</th>
+                <th>Tipo</th>
+                <th>Equipo</th>
+                <th>Descripción</th>
+                <th>Prioridad</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+                <th class="text-center">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="tabla-solicitudes-body">
+              <tr>
+                <td colspan="8" class="text-center">Cargando solicitudes...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <!-- MODAL PARA CREAR INCIDENCIA / TICKET (VISIBLE PARA VERIFICACIÓN) -->
+    <div class="modal" id="modal-ticket" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+      <div class="modal-content" style="background: #fff; padding: 2rem; border-radius: 8px; width: 100%; max-width: 500px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <h3 style="margin: 0;">Crear Incidencia / Ticket</h3>
+          <button type="button" class="btn-close" id="btn-close-modal-ticket" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
+        </div>
+        <form id="form-ticket">
+          
+          <!-- CAMPOS VISIBLES PARA VERIFICAR DATOS -->
+          <div class="form-group" style="margin-bottom: 1rem; display: none;">
+            <label><strong>ID de Equipo:</strong></label>
+            <input type="text" id="ticket-id-equipo" readonly style="width: 100%; padding: 0.5rem; background: #e2e8f0; border: 1px solid #cbd5e1; border-radius: 4px;">
+          </div>
+
+          <div class="form-group" style="margin-bottom: 1rem; display: none;">
+            <label><strong>Nombre:</strong></label>
+            <input type="text" id="ticket-nombre" readonly style="width: 100%; padding: 0.5rem; background: #e2e8f0; border: 1px solid #cbd5e1; border-radius: 4px;">
+          </div>
+
+          <div class="form-group" style="margin-bottom: 1rem; display: none;">
+            <label><strong>Nombre de Usuario:</strong></label>
+            <input type="text" id="ticket-nombre-usuario" readonly style="width: 100%; padding: 0.5rem; background: #e2e8f0; border: 1px solid #cbd5e1; border-radius: 4px;">
+          </div>
+
+          <div class="form-group" style="margin-bottom: 1rem; display: none;">
+            <label><strong>Correo Electrónico:</strong></label>
+            <input type="text" id="ticket-correo" readonly style="width: 100%; padding: 0.5rem; background: #e2e8f0; border: 1px solid #cbd5e1; border-radius: 4px;">
+          </div>
+
+          <!-- Input visible para el mensaje -->
+          <div class="form-group" style="margin-bottom: 1.5rem;">
+            <label><strong>Mensaje de Texto (Descripción):</strong></label>
+            <textarea id="ticket-mensaje" rows="4" placeholder="Escribe el detalle de tu solicitud aquí..." required style="width: 100%; padding: 0.75rem; border: 1px solid #cbd5e1; border-radius: 4px;"></textarea>
+          </div>
+
+          <div class="modal-actions" style="display: flex; justify-content: flex-end; gap: 1rem;">
+            <button type="button" class="btn btn--secondary" id="btn-cancelar-ticket">Cancelar</button>
+            <button type="submit" class="btn btn--primary">Enviar Ticket</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="../assets/js/dashboard.js"></script>
+  <script src="../assets/js/mis-solicitudes.js"></script>
+  <script src="/assets/js/sidebar.js"></script>
+</body>
+</html>

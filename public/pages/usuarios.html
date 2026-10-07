@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Usuarios - Control TI</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css">
+  <link rel="stylesheet" href="../assets/css/Styles.css">
+  <link rel="stylesheet" href="../assets/css/dashboard.css">
+  
+  <!--Comprobación del usuario-->
+  <script>
+    const userRole = localStorage.getItem('id_rol') || '1';
+    if (Number(userRole) !== 1) {
+      alert('Acceso restringido: Se requieren permisos de Administrador.');
+      window.location.href = '/dashboard';
+    }
+  </script>
+</head>
+<body>
+
+  <div class="dashboard-layout">
+    <!-- Overlay para cerrar el menú en móviles -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <div id="sidebar-container"></div>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar__left">
+          <button class="btn-toggle-sidebar" id="btn-toggle-sidebar" aria-label="Abrir Menú">
+            <i class="ri-menu-line"></i>
+          </button>
+          <h2>Gestión de Solicitudes</h2>
+        </div>
+
+        <div class="user-profile">
+          <i class="ri-user-3-fill"></i>
+          <strong id="nombre-usuario">Cargando...</strong>
+          <small id="rol-usuario" class="badge"></small>
+        </div>
+      </header>
+
+      <!-- TABLA DE USUARIOS -->
+      <section class="panel-section">
+        <div class="panel-header">
+          <h3>Cuentas Registradas</h3>
+          
+          <!-- Acciones de cabecera alineadas como en dashboard.html -->
+          <div class="panel-actions">
+            <div class="search-box">
+              <i class="ri-search-line search-icon"></i>
+              <input 
+                type="search" 
+                id="inputBuscar" 
+                placeholder="Buscar por nombre, email..." 
+                autocomplete="off"
+                onkeyup="filtrarTabla()"
+              >
+            </div>
+
+            <button class="btn btn--primary" id="btn-nuevo-usuario" onclick="abrirModalCrear()">
+              <i class="ri-add-line"></i> Nuevo Usuario
+            </button>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Rol</th>
+                <th>Estado</th>
+                <th class="text-center">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="tabla-usuarios-body">
+              <tr>
+                <td colspan="6" class="text-center">Cargando usuarios...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- MODAL PARA CREAR / EDITAR USUARIO -->
+  <div class="modal" id="modal-usuario">
+    <div class="modal__content">
+      <div class="modal__header">
+        <h3 id="modalTitulo">Registrar Nuevo Usuario</h3>
+        <button class="modal__close" id="btn-close-modal"><i class="ri-close-line"></i></button>
+      </div>
+
+      <form id="form-usuario" class="modal__body">
+        <input type="hidden" id="edit-id-usuario">
+
+        <h4 class="form-section-title">Información de la Cuenta</h4>
+        <div class="form-grid">
+          <div class="form-group form-group--full">
+            <label>Nombre Completo</label>
+            <input type="text" id="edit-nombre" required placeholder="Ej: Juan Pérez">
+          </div>
+
+          <div class="form-group form-group--full">
+            <label>Correo Electrónico</label>
+            <input type="email" id="edit-email" required placeholder="correo@ejemplo.com">
+          </div>
+
+          <div class="form-group form-group--full">
+            <label>Contraseña</label>
+            <input type="password" id="edit-password" placeholder="••••••••">
+            <small class="help-text" id="pass-help-text">Requerida para nuevos usuarios.</small>
+          </div>
+
+          <div class="form-group">
+            <label>Rol del Sistema</label>
+            <select id="edit-rol" required>
+              <option value="1">Administrador</option>
+              <option value="2">Técnico</option>
+              <option value="3">Empleado</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Estado de Cuenta</label>
+            <select id="edit-estado" required>
+              <option value="activo">Activo</option>
+              <option value="inactivo">Inactivo</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal__footer">
+          <button type="button" class="btn btn--secondary" id="btn-cancelar">Cancelar</button>
+          <button type="submit" class="btn btn--primary" id="btn-guardar">Guardar Usuario</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script src="../assets/js/dashboard.js"></script>
+  <script src="../assets/js/usuarios.js"></script>
+  <script src="/assets/js/sidebar.js"></script>
+</body>
+</html>

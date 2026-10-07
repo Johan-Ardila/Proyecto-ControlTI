@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar Sesión - Control Equipos TI</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .login-card {
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 380px;
+    }
+    .login-card h2 {
+      margin-top: 0;
+      margin-bottom: 20px;
+      color: #333;
+      text-align: center;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #555;
+    }
+    .form-control {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    .btn {
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      border: none;
+      color: white;
+      font-weight: bold;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .btn:hover {
+      background-color: #0056b3;
+    }
+    .alert-danger {
+      color: #721c24;
+      background-color: #f8d7da;
+      border: 1px solid #f5c6cb;
+      padding: 10px;
+      border-radius: 4px;
+      margin-bottom: 15px;
+      display: none;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-card">
+    <h2>Control Equipos TI</h2>
+    
+    <div id="mensajeError" class="alert-danger"></div>
+
+    <form id="form-login" onsubmit="return false;">
+      <div class="form-group">
+        <label for="usuario">Correo Electrónico</label>
+        <input 
+          type="email" 
+          id="usuario" 
+          class="form-control" 
+          placeholder="ejemplo@correo.com" 
+          required>
+      </div>
+
+      <div class="form-group">
+        <label for="clave">Contraseña</label>
+        <input 
+          type="password" 
+          id="clave" 
+          class="form-control" 
+          placeholder="••••••••" 
+          required>
+      </div>
+
+      <button type="submit" class="btn">Ingresar</button>
+    </form>
+  </div>
+
+  <script>
+ document.getElementById('form-login').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const correo = document.getElementById('usuario').value.trim();
+  const clave = document.getElementById('clave').value.trim();
+  const mensajeError = document.getElementById('mensajeError');
+
+  mensajeError.style.display = 'none';
+
+  try {
+    const response = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ correo, clave })
+    });
+
+    const data = await response.json();
+
+    // Si status es 'success', la contraseña fue correcta
+    if (response.ok && data.status === 'success' && data.usuario) {
+      const u = data.usuario;
+
+      localStorage.setItem('usuario_session', JSON.stringify({
+        id_usuario: u.id_usuario,
+        nombre: u.nombre,
+        correo: u.correo,
+        rol: u.rol
+      }));
+
+      window.location.href = '/dashboard';
+    } else {
+      // Muestra "Contraseña incorrecta" o "Usuario no encontrado"
+      mensajeError.textContent = data.message || 'Credenciales inválidas.';
+      mensajeError.style.display = 'block';
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    mensajeError.textContent = 'Error de conexión con el servidor.';
+    mensajeError.style.display = 'block';
+  }
+});
+  </script>
+</body>
+</html>

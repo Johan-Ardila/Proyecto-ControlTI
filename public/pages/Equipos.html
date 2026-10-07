@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Equipos y Stock - Control TI</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css">
+  <link rel="stylesheet" href="../assets/css/Styles.css">
+  <link rel="stylesheet" href="../assets/css/dashboard.css">
+</head>
+<body>
+
+  <div class="dashboard-layout">
+
+    <div id="sidebar-container"></div>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar__left">
+          <button class="btn-toggle-sidebar" id="btn-toggle-sidebar" aria-label="Abrir Menú">
+            <i class="ri-menu-line"></i>
+          </button>
+          <h2>Gestión de Solicitudes</h2>
+        </div>
+
+        <div class="user-profile">
+          <i class="ri-user-3-fill"></i>
+          <strong id="nombre-usuario">Cargando...</strong>
+          <small id="rol-usuario" class="badge"></small>
+        </div>
+      </header>
+
+      <section class="panel-section">
+        <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;">
+          <h3>Inventario Completo</h3>
+          
+          <div style="display: flex; gap: 0.8rem; align-items: center; flex-wrap: wrap;">
+            <!-- Filtro por Tipo -->
+            <select id="filtro-tipo" style="padding: 8px; border-radius: 6px; border: 1px solid #ccc;">
+              <option value="">Todos los Tipos</option>
+              <option value="Laptop">Laptops</option>
+              <option value="Desktop">Desktops</option>
+              <option value="Servidor">Servidores</option>
+              <option value="Periférico">Periféricos</option>
+            </select>
+
+            <!-- Filtro por Estado -->
+            <select id="filtro-estado" style="padding: 8px; border-radius: 6px; border: 1px solid #ccc;">
+              <option value="">Todos los Estados</option>
+              <option value="disponible">Disponibles</option>
+              <option value="asignado">Asignados</option>
+              <option value="mantenimiento">En Mantenimiento</option>
+            </select>
+
+            <!-- Búsqueda -->
+            <div class="search-box" style="position: relative;">
+              <i class="ri-search-line" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #888;"></i>
+              <input type="search" id="inputBuscar" placeholder="Buscar código, marca, CPU..." style="padding-left: 32px; padding-top: 8px; padding-bottom: 8px; border-radius: 6px; border: 1px solid #ccc;">
+            </div>
+
+            <button class="btn btn--primary" id="btn-nuevo-equipo">
+              <i class="ri-add-line"></i> Nuevo Equipo
+            </button>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Código</th>
+                <th>Equipo</th>
+                <th>Tipo</th>
+                <th>Ubicación</th>
+                <th>Especificaciones (MongoDB)</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="tabla-equipos-body">
+              <tr>
+                <td colspan="7" class="text-center">Cargando equipos...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Reutilizamos el mismo modal que ya tenemos -->
+  <!-- ... (Modal de registrar/editar equipo) ... -->
+
+  <script src="../assets/js/dashboard.js"></script>
+  <script src="/assets/js/sidebar.js"></script>
+</body>
+</html>

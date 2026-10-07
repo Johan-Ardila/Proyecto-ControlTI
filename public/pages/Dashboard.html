@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Control de Equipos TI</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css">
+  <link rel="stylesheet" href="../assets/css/Styles.css">
+  <link rel="stylesheet" href="../assets/css/dashboard.css">
+</head>
+<body>
+
+  <div class="dashboard-layout">
+    <!-- Overlay para cerrar el menú en móviles -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+   <div id="sidebar-container"></div>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar__left">
+          <button class="btn-toggle-sidebar" id="btn-toggle-sidebar" aria-label="Abrir Menú">
+            <i class="ri-menu-line"></i>
+          </button>
+          <h2>Gestión de Solicitudes</h2>
+        </div>
+
+        <div class="user-profile">
+          <i class="ri-user-3-fill"></i>
+          <strong id="nombre-usuario">Cargando...</strong>
+          <small id="rol-usuario" class="badge"></small>
+        </div>
+      </header>
+
+      <!-- KPI CARDS -->
+      <section class="kpi-grid">
+        <div class="kpi-card kpi-card--teal">
+          <i class="ri-macbook-line"></i>
+          <div>
+            <h3 id="kpi-total">0</h3>
+            <p>Total Equipos</p>
+          </div>
+        </div>
+        <div class="kpi-card kpi-card--purpura">
+          <i class="ri-checkbox-circle-line"></i>
+          <div>
+            <h3 id="kpi-disponibles">0</h3>
+            <p>Disponibles</p>
+          </div>
+        </div>
+        <div class="kpi-card kpi-card--coral">
+          <i class="ri-tools-line"></i>
+          <div>
+            <h3 id="kpi-mantenimiento">0</h3>
+            <p>En Mantenimiento</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- TABLA DE INVENTARIO -->
+      <section class="panel-section">
+        <div class="panel-header">
+          <h3>Inventario de Equipos</h3>
+          
+          <div class="panel-actions">
+            <div class="search-box">
+              <i class="ri-search-line search-icon"></i>
+              <input 
+                type="search" 
+                id="inputBuscar" 
+                placeholder="Buscar código, marca, CPU..." 
+                autocomplete="off"
+              >
+            </div>
+
+            <button class="btn btn--primary" id="btn-nuevo-equipo">
+              <i class="ri-add-line"></i> Nuevo Equipo
+            </button>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Código</th>
+                <th>Equipo</th>
+                <th>Imagen</th>
+                <th>Tipo</th>
+                <th>Ubicación</th>
+                <th>Especificaciones</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="tabla-equipos-body">
+              <tr>
+                <td colspan="8" class="text-center">Cargando equipos...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- MODAL PARA CREAR/EDITAR EQUIPO -->
+  <div class="modal" id="modal-equipo">
+    <div class="modal__content">
+      <div class="modal__header">
+        <h3 id="modalTitulo">Registrar Nuevo Equipo</h3>
+        <button class="modal__close" id="btn-close-modal"><i class="ri-close-line"></i></button>
+      </div>
+      <form id="form-equipo" class="modal__body">
+        
+        <input type="hidden" id="equipo-id" name="id_equipo">
+        <input type="hidden" id="imagen-url-actual">
+
+        <h4 class="form-section-title">Datos Principales (MariaDB)</h4>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Código Inventario Base</label>
+            <input type="text" id="codigo_inventario" required placeholder="EQ-LAP-002">
+          </div>
+          <div class="form-group">
+            <label>Tipo de Equipo</label>
+            <select id="tipo_equipo" required>
+              <option value="Laptop">Laptop</option>
+              <option value="Desktop">Desktop</option>
+              <option value="Servidor">Servidor</option>
+              <option value="Periférico">Periférico</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Marca</label>
+            <input type="text" id="marca" required placeholder="HP / Dell / Lenovo">
+          </div>
+          <div class="form-group">
+            <label>Modelo</label>
+            <input type="text" id="modelo" required placeholder="ProBook 440">
+          </div>
+          <div class="form-group">
+            <label>Ubicación</label>
+            <input type="text" id="ubicacion" required placeholder="Oficina 102">
+          </div>
+          <div class="form-group">
+            <label>Estado Inicial</label>
+            <select id="estado">
+              <option value="disponible">Disponible</option>
+              <option value="asignado">Asignado</option>
+              <option value="mantenimiento">Mantenimiento</option>
+            </select>
+          </div>
+
+          <!-- CAMPO DE CANTIDAD PARA LOTE AUTOMATIZADO -->
+          <div class="form-group">
+            <label>Cantidad a Registrar (Lote)</label>
+            <input type="number" id="cantidad_lote" value="1" min="1" max="50" required placeholder="1">
+            <small class="help-text" style="color: #666; font-size: 0.8rem;">Genera múltiples registros independientes.</small>
+          </div>
+
+        </div>
+
+        <h4 class="form-section-title">Especificaciones Técnicas</h4>
+        <div class="form-grid">
+          <div class="form-group form-group--full">
+            <label for="modal-imagen">Imagen del Producto</label>
+            <input type="file" id="modal-imagen" accept="image/*" class="form-control">
+            <small class="help-text">Selecciona una foto para mostrar en la vista pública.</small>
+          </div>
+          <div class="form-group">
+            <label>Procesador (CPU)</label>
+            <input type="text" id="procesador" placeholder="Ryzen 5 / Core i5">
+          </div>
+          <div class="form-group">
+            <label>Memoria RAM</label>
+            <input type="text" id="ram" placeholder="16 GB DDR4">
+          </div>
+          <div class="form-group">
+            <label>Almacenamiento</label>
+            <input type="text" id="almacenamiento" placeholder="512 GB NVMe SSD">
+          </div>
+          <!-- NUEVO CAMPO DE TARJETA GRÁFICA (GPU) -->
+          <div class="form-group">
+            <label>Tarjeta Gráfica (GPU)</label>
+            <input type="text" id="grafica" placeholder="Integrada / NVIDIA RTX 3050">
+          </div>
+          <div class="form-group">
+            <label>Sistema Operativo</label>
+            <input type="text" id="sistema_operativo" placeholder="Windows 11 / Linux">
+          </div>
+        </div>
+
+        <div class="modal__footer">
+          <button type="button" class="btn btn--secondary" id="btn-cancelar">Cancelar</button>
+          <button type="submit" class="btn btn--primary">Guardar Equipo</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../assets/js/dashboard.js"></script>
+  <script src="/assets/js/sidebar.js"></script>
+</body>
+</html>

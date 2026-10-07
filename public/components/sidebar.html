@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <title>Document</title>
+</head>
+<body>
+    
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar__brand">
+    <img src="../assets/img/Icons/logo-controlti-mini.png" alt="Logo">
+    <span>Control TI</span>
+  </div>
+
+  <nav class="sidebar__nav">
+    <!-- Visible para Admin (1) y Técnico (2) -->
+    <a href="/dashboard" class="sidebar__link active" data-roles="1,2">
+      <i class="ri-dashboard-3-line"></i> Equipos y Stock
+    </a>
+    
+    <!-- EXCLUSIVO para Administrador (1) -->
+    <a href="/usuarios" class="sidebar__link" data-roles="1">
+      <i class="ri-user-settings-line"></i> Usuarios
+    </a>
+
+    <a href="/mis-solicitudes" class="sidebar__link" data-roles="1,2,3">
+      <i class="ri-file-list-3-line"></i> Solicitudes
+    </a>
+
+    <a href="/incidencias" class="sidebar__link" data-roles="1,2">
+      <i class="ri-error-warning-line"></i> Incidencias
+    </a>
+
+    <div class="sidebar__divider"></div>
+
+    <!-- Navegar a la web conservando la sesión activa -->
+    <a href="/" class="sidebar__link">
+      <i class="ri-global-line"></i> Volver a la Web
+    </a>
+
+    <!-- Acción exclusiva para destruir sesión -->
+    <a href="#" id="btn-logout" class="sidebar__link sidebar__link--logout">
+      <i class="ri-logout-box-r-line"></i> Cerrar Sesión
+    </a>
+  </nav>
+</aside>
+
+</body>
+<script src="../assets/js/sidebar.js"></script>
+</html>

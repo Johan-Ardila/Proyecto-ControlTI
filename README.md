@@ -1,4 +1,4 @@
-# Proyecto Control TI 🖥️📊
+# Proyecto Control TI 
 
 Sistema web integral desarrollado para la gestión, control y trazabilidad de inventario de equipos tecnológicos y recursos de hardware. Este proyecto fue diseñado e implementado como parte fundamental del proceso formativo en el programa de Análisis y Desarrollo de Software (ADSO).
 
